@@ -14,22 +14,22 @@ Add the following to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  snowflake: ^1.0.0
+  snowflaker: ^1.0.0
 ```
 
 Then import the library:
 
 ```dart
-import 'package:snowflake/snowflake.dart';
+import 'package:snowflaker/snowflaker.dart';
 ```
 
-To generate a new ID, create a new instance of `Snowflake` and call its `nextId()` method:
+To generate a new ID, create a new instance of `snowflaker` and call its `nextId()` method:
 
 ```dart
 
-// Create a new instance of Snowflake with a worker ID of 1 and a datacenter ID of 1.
-final snowflake = Snowflake(workerId: 1, datacenterId: 1);
+// Create a new instance of snowflaker with a worker ID of 1 and a datacenter ID of 1.
+final snowflaker = Snowflaker(workerId: 1, datacenterId: 1);
 
 // Generate a new ID.
-final id = snowflake.nextId();
+final id = snowflaker.nextId();
 ```

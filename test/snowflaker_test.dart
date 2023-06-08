@@ -1,47 +1,47 @@
-import 'package:snowflake/snowflake.dart';
+import 'package:snowflaker/snowflaker.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Snowflake', () {
-    late Snowflake snowflake1;
-    late Snowflake snowflake2;
+  group('snowflaker', () {
+    late Snoflaker snowflaker1;
+    late Snoflaker snowflaker2;
 
     setUp(() {
-      snowflake1 = Snowflake(
+      snowflaker1 = Snoflaker(
         workerId: 1,
         datacenterId: 1,
       );
-      snowflake2 = Snowflake(
+      snowflaker2 = Snoflaker(
         workerId: 2,
         datacenterId: 2,
       );
     });
 
     test('should create unique ids for different instances', () {
-      final id1 = snowflake1.nextId();
-      final id2 = snowflake2.nextId();
+      final id1 = snowflaker1.nextId();
+      final id2 = snowflaker2.nextId();
 
       expect(id1, isNot(equals(id2)));
     });
 
     test('should create unique ids for same instance', () {
-      final id1 = snowflake1.nextId();
-      final id2 = snowflake1.nextId();
+      final id1 = snowflaker1.nextId();
+      final id2 = snowflaker1.nextId();
 
       expect(id1, isNot(equals(id2)));
     });
 
     test('should throw error if clock moves backwards', () {
-      final timeBefore = snowflake1.timestamp;
-      snowflake1.lastTimestamp = timeBefore + 1100;
+      final timeBefore = snowflaker1.timestamp;
+      snowflaker1.lastTimestamp = timeBefore + 1100;
 
-      expect(() => snowflake1.nextId(), throwsA(isA<ArgumentError>()));
+      expect(() => snowflaker1.nextId(), throwsA(isA<ArgumentError>()));
     });
 
     test('should throw error if workerId exceeds limit', () {
       expect(
-        () => Snowflake(
-          workerId: Snowflake.maxWorkerId + 1,
+        () => Snoflaker(
+          workerId: Snoflaker.maxWorkerId + 1,
           datacenterId: 0,
         ),
         throwsA(isA<AssertionError>()),
@@ -50,7 +50,7 @@ void main() {
 
     test('should throw error if workerId is less than 0', () {
       expect(
-        () => Snowflake(
+        () => Snoflaker(
           workerId: -1,
           datacenterId: 0,
         ),
@@ -60,9 +60,9 @@ void main() {
 
     test('should throw error if datacenterId exceeds limit', () {
       expect(
-        () => Snowflake(
+        () => Snoflaker(
           workerId: 0,
-          datacenterId: Snowflake.maxDatacenterId + 1,
+          datacenterId: Snoflaker.maxDatacenterId + 1,
         ),
         throwsA(isA<AssertionError>()),
       );
@@ -70,7 +70,7 @@ void main() {
 
     test('should throw error if datacenterId is less than 0', () {
       expect(
-        () => Snowflake(
+        () => Snoflaker(
           workerId: 0,
           datacenterId: -1,
         ),
