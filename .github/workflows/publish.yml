@@ -3,12 +3,13 @@ name: Publish to pub.dev
 on:
   push:
     branches:
-      - main
+      - '*'
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+*'
 
 jobs:
   publish:
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
     permissions:
       id-token: 'write'
     
