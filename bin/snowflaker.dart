@@ -8,7 +8,9 @@ void main(List<String> arguments) {
     datacenterId: 1,
   );
   final id = snowflaker.nextId();
+  
   final id2 = snowflaker.nextId();
+
   Zone.current.print('id: $id');
   Zone.current.print('id2: $id2');
 }
