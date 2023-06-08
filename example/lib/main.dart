@@ -1,14 +1,14 @@
-import 'dart:async';
-
 import 'package:snowflaker/snowflaker.dart';
 
-void main(List<String> arguments) {
+void main(List<String> args) {
   final snowflaker = Snowflaker(
     workerId: 1,
     datacenterId: 1,
   );
+
   final id = snowflaker.nextId();
   final id2 = snowflaker.nextId();
-  Zone.current.print('id: $id');
-  Zone.current.print('id2: $id2');
+
+  print('id: $id');
+  print('id2: $id2');
 }

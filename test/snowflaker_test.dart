@@ -3,15 +3,15 @@ import 'package:test/test.dart';
 
 void main() {
   group('snowflaker', () {
-    late Snoflaker snowflaker1;
-    late Snoflaker snowflaker2;
+    late Snowflaker snowflaker1;
+    late Snowflaker snowflaker2;
 
     setUp(() {
-      snowflaker1 = Snoflaker(
+      snowflaker1 = Snowflaker(
         workerId: 1,
         datacenterId: 1,
       );
-      snowflaker2 = Snoflaker(
+      snowflaker2 = Snowflaker(
         workerId: 2,
         datacenterId: 2,
       );
@@ -40,8 +40,8 @@ void main() {
 
     test('should throw error if workerId exceeds limit', () {
       expect(
-        () => Snoflaker(
-          workerId: Snoflaker.maxWorkerId + 1,
+        () => Snowflaker(
+          workerId: Snowflaker.maxWorkerId + 1,
           datacenterId: 0,
         ),
         throwsA(isA<AssertionError>()),
@@ -50,7 +50,7 @@ void main() {
 
     test('should throw error if workerId is less than 0', () {
       expect(
-        () => Snoflaker(
+        () => Snowflaker(
           workerId: -1,
           datacenterId: 0,
         ),
@@ -60,9 +60,9 @@ void main() {
 
     test('should throw error if datacenterId exceeds limit', () {
       expect(
-        () => Snoflaker(
+        () => Snowflaker(
           workerId: 0,
-          datacenterId: Snoflaker.maxDatacenterId + 1,
+          datacenterId: Snowflaker.maxDatacenterId + 1,
         ),
         throwsA(isA<AssertionError>()),
       );
@@ -70,7 +70,7 @@ void main() {
 
     test('should throw error if datacenterId is less than 0', () {
       expect(
-        () => Snoflaker(
+        () => Snowflaker(
           workerId: 0,
           datacenterId: -1,
         ),

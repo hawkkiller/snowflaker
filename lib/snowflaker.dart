@@ -1,7 +1,7 @@
 library snowflaker;
 
-class Snoflaker {
-  Snoflaker({
+class Snowflaker {
+  Snowflaker({
     required this.workerId,
     required this.datacenterId,
     this.epoch = twepoch,
