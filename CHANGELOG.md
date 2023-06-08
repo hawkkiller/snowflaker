@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2] - 2023-06-8
+
+### Changed
+
+- Updated bin/snowflaker.dart
+
 ## [1.0.1] - 2023-06-8
 
 ### Changed
