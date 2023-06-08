@@ -1,7 +1,7 @@
 name: snowflake
 description: Twitter's Snowflake algorithm implementation in Dart.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/hawkkiller/snowflake
 
 environment:
   sdk: ^3.0.0
