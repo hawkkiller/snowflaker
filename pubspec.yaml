@@ -1,5 +1,5 @@
 name: snowflaker
-description: |
+description: >
   Twitter's snowflaker algorithm implementation in Dart.
   The Snowflake algorithm is a unique ID generator that was originally developed by Twitter. 
   The algorithm generates 64-bit IDs that are composed of a timestamp, a worker ID, and a sequence number.
