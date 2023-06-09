@@ -1,5 +1,7 @@
 library snowflaker;
 
+import 'package:meta/meta.dart';
+
 class Snowflaker {
   Snowflaker({
     required this.workerId,
@@ -44,19 +46,23 @@ class Snowflaker {
   static const int sequenceMask = -1 ^ (-1 << sequenceBits);
 
   /// The worker ID.
+  @visibleForTesting
   final int workerId;
 
   /// The data center ID.
+  @visibleForTesting
   final int datacenterId;
 
   /// This is the custom epoch time, it's the start time from where the timestamp begins.
   /// All timestamps are the number of milliseconds since this point.
+  @visibleForTesting
   final int epoch;
 
   /// The sequence number for the ID.
-  int sequence = 0;
+  int _sequence = 0;
 
   /// The last timestamp that was used to generate an ID.
+  @visibleForTesting
   int lastTimestamp = -1;
 
   int get timestamp => DateTime.now().millisecondsSinceEpoch;
@@ -71,21 +77,22 @@ class Snowflaker {
     }
 
     if (lastTimestamp == timestamp) {
-      sequence = (sequence + 1) & sequenceMask;
-      if (sequence == 0) {
+      _sequence = (_sequence + 1) & sequenceMask;
+      if (_sequence == 0) {
         timestamp = tilNextMillis(lastTimestamp);
       }
     } else {
-      sequence = 0;
+      _sequence = 0;
     }
     lastTimestamp = timestamp;
 
     return ((timestamp - epoch) << timestampLeftShift) |
         (datacenterId << datacenterIdShift) |
         (workerId << workerIdShift) |
-        sequence;
+        _sequence;
   }
 
+  @visibleForTesting
   int tilNextMillis(int lastTimestamp) {
     var timestamp = this.timestamp;
     while (timestamp <= lastTimestamp) {
