@@ -2,8 +2,30 @@ library snowflaker;
 
 import 'package:meta/meta.dart';
 
-class Snowflaker {
-  Snowflaker({
+abstract interface class Snowflaker {
+  factory Snowflaker({
+    required int workerId,
+    required int datacenterId,
+    int epoch,
+  }) = _SnowflakerImpl;
+
+  /// The worker ID.
+  int get workerId;
+
+  /// The data center ID.
+  int get datacenterId;
+
+  /// This is the custom epoch time,
+  ///
+  ///  it's the start time from where the timestamp begins.
+  int get epoch;
+
+  /// Generate new snowflake ID.
+  int nextId();
+}
+
+final class _SnowflakerImpl implements Snowflaker {
+  _SnowflakerImpl({
     required this.workerId,
     required this.datacenterId,
     this.epoch = twepoch,
@@ -40,35 +62,36 @@ class Snowflaker {
   static const int datacenterIdShift = sequenceBits + workerIdBits;
 
   /// The number of bits to shift to the left when constructing the ID to place the timestamp.
-  static const int timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;
+  static const int timestampLeftShift =
+      sequenceBits + workerIdBits + datacenterIdBits;
 
   /// A mask that can be used to get the sequence number.
   static const int sequenceMask = -1 ^ (-1 << sequenceBits);
 
   /// The worker ID.
-  @visibleForTesting
+  @override
   final int workerId;
 
   /// The data center ID.
-  @visibleForTesting
+  @override
   final int datacenterId;
 
   /// This is the custom epoch time, it's the start time from where the timestamp begins.
   /// All timestamps are the number of milliseconds since this point.
-  @visibleForTesting
+  @override
   final int epoch;
 
   /// The sequence number for the ID.
   int _sequence = 0;
 
   /// The last timestamp that was used to generate an ID.
-  @visibleForTesting
   int lastTimestamp = -1;
 
-  int get timestamp => DateTime.now().millisecondsSinceEpoch;
+  int get _nowTimestamp => DateTime.now().millisecondsSinceEpoch;
 
+  @override
   int nextId() {
-    var timestamp = this.timestamp;
+    var timestamp = _nowTimestamp;
 
     if (timestamp < lastTimestamp) {
       throw ArgumentError(
@@ -94,9 +117,9 @@ class Snowflaker {
 
   @visibleForTesting
   int tilNextMillis(int lastTimestamp) {
-    var timestamp = this.timestamp;
+    var timestamp = _nowTimestamp;
     while (timestamp <= lastTimestamp) {
-      timestamp = this.timestamp;
+      timestamp = _nowTimestamp;
     }
     return timestamp;
   }
